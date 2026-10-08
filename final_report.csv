@@ -1,0 +1,21 @@
+Student_ID,Name,Department,Python,AI_ML,Data_Science,Attendance,Total,Average,Grade,Status
+1001,Sakshi Sharma,BCA,85,80,88,92,253,84.33,A,Pass
+1002,Anjali Singh,BCA,78,75,80,85,233,77.67,B,Pass
+1003,Priya Patel,MCA,92,89,90,95,271,90.33,A+,Pass
+1004,Riya Gupta,MCA,88,85,87,90,260,86.67,A,Pass
+1005,Neha Verma,BBA,65,60,68,78,193,64.33,C,Pass
+1006,Pooja Yadav,BBA,72,70,75,82,217,72.33,B,Pass
+1007,Simran Kaur,BCA,90,88,92,94,270,90.0,A+,Pass
+1008,Kavita Rani,MCA,76,74,78,80,228,76.0,B,Pass
+1009,Muskan Ali,BCA,82,80,85,88,247,82.33,A,Pass
+1010,Divya Saini,MBA,68,65,70,75,203,67.67,C,Pass
+1011,Anu Kumari,BCA,88,85,90,91,263,87.67,A,Pass
+1012,Sneha Mishra,BBA,70,68,72,80,210,70.0,B,Pass
+1013,Ishita Jain,MCA,95,92,96,97,283,94.33,A+,Pass
+1014,Tannu Dhillon,BCA,77,75,80,84,232,77.33,B,Pass
+1015,Komal Chauhan,MBA,69,67,71,77,207,69.0,C,Pass
+1016,Nisha Bansal,BCA,84,81,86,89,251,83.67,A,Pass
+1017,Ritika Mehra,MCA,91,89,93,94,273,91.0,A+,Pass
+1018,Sunita Devi,BBA,66,64,68,79,198,66.0,C,Pass
+1019,Aarti Goel,BCA,79,76,81,86,236,78.67,B,Pass
+1020,Meena Kumari,MCA,87,84,89,90,260,86.67,A,Pass
