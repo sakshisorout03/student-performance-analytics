@@ -7,53 +7,101 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     df = pd.read_csv('final_report.csv')
-
-    # Top 5 Performers
-    top5 = df.sort_values(by='Average', ascending=False).head(5)[['Student_ID','Name','Average','Grade']]
-    top5_html = top5.to_html(classes='table table-sm table-bordered', index=False)
-
-    # Subject-wise Analysis
-    subjects = ['Python', 'AI_ML', 'Data_Science']
-    sub_data = []
-    for sub in subjects:
-        sub_data.append(f"<tr><td>{sub}</td><td>{round(df[sub].mean(),2)}</td><td>{df[sub].max()}</td><td>{df[sub].min()}</td></tr>")
-    sub_table = "".join(sub_data)
-
-    # Department-wise Average
+    top5 = df.sort_values(by='Average', ascending=False).head(5)
     dept_avg = df.groupby('Department')['Average'].mean().round(2).reset_index()
-    dept_html = dept_avg.to_html(classes='table table-sm table-bordered', index=False)
-
-    # Stats
-    total_pass = len(df[df['Status']=='Pass'])
-    total_fail = len(df[df['Status']=='Fail'])
-    full_table = df.to_html(classes='table table-striped table-bordered', index=False)
 
     return f"""
-    <html><head><title>Student Analytics Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    </head><body style="background:#f0f2f5">
-    <div class="container mt-3">
-        <h2 class="text-center text-primary">Student Performance Analytics</h2>
-        <p class="text-center">By Sakshi Sorout | Python Data Science Project</p>
+    <html>
+    <head>
+        <title>Sakshi Sorout - Student Analytics Portfolio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <body style="background:#f8f9fa">
 
-        <div class="row mt-4">
-            <div class="col-md-6"><div class="card p-3 shadow-sm mb-3">
-                <h5>🏆 Top 5 Performers</h5>{top5_html}
-            </div></div>
-            <div class="col-md-6"><div class="card p-3 shadow-sm mb-3">
-                <h5>📚 Subject-wise Analysis (Avg, Max, Min)</h5>
-                <table class="table table-sm table-bordered"><tr><th>Subject</th><th>Avg</th><th>Max</th><th>Min</th></tr>{sub_table}</table>
-                <h5 class="mt-3">🏢 Department-wise Average</h5>{dept_html}
-                <h5 class="mt-3">✅ Total Pass: {total_pass} | ❌ Total Fail: {total_fail}</h5>
-            </div></div>
+    <!-- NAVBAR jaise Portfolio me hota hai -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Sakshi Sorout</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="#top">Top 5</a></li>
+            <li class="nav-item"><a class="nav-link" href="#analysis">Analysis</a></li>
+            <li class="nav-item"><a class="nav-link" href="#report">Full Report</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          </ul>
         </div>
+      </div>
+    </nav>
 
-        <div class="card p-3 shadow-sm mt-2">
-            <h5>📋 Final Report - Complete Data</h5>
-            <div class="table-responsive">{full_table}</div>
-        </div>
-        <br><br>
-    </div></body></html>
+    <div class="container mt-4">
+
+        <!-- HOME SECTION -->
+        <section id="home" class="text-center py-5 bg-white rounded shadow-sm">
+            <h1 class="text-primary">Student Performance Analytics</h1>
+            <p class="lead">A Python & Data Science Project to analyze student performance across departments</p>
+            <p><b>By Sakshi Sorout</b> | BCA - MKM Group of Colleges, Hodal</p>
+            <a href="#dashboard" class="btn btn-primary mt-2">View Analytics</a>
+            <a href="https://github.com/sakshisorout03/student-performance-analytics" class="btn btn-dark mt-2">GitHub Code</a>
+        </section>
+
+        <!-- DASHBOARD SECTION -->
+        <section id="dashboard" class="mt-5">
+            <h3>📊 Dashboard Overview</h3>
+            <div class="row text-center">
+                <div class="col-md-3"><div class="card p-3 shadow-sm">Total Students<br><h3>{len(df)}</h3></div></div>
+                <div class="col-md-3"><div class="card p-3 shadow-sm">Pass<br><h3>{len(df[df['Status']=='Pass'])}</h3></div></div>
+                <div class="col-md-3"><div class="card p-3 shadow-sm">Class Avg<br><h3>{round(df['Average'].mean(),2)}%</h3></div></div>
+                <div class="col-md-3"><div class="card p-3 shadow-sm">Topper<br><h6>{top5.iloc[0]['Name']}<br>{top5.iloc[0]['Average']}%</h6></div></div>
+            </div>
+        </section>
+
+        <!-- TOP 5 SECTION -->
+        <section id="top" class="mt-5 card p-3 shadow-sm">
+            <h3>🏆 Top 5 Performers</h3>
+            {top5[['Student_ID','Name','Department','Average','Grade']].to_html(classes='table table-bordered table-striped', index=False)}
+        </section>
+
+        <!-- ANALYSIS SECTION -->
+        <section id="analysis" class="mt-5 row">
+            <div class="col-md-6"><div class="card p-3 shadow-sm h-100">
+                <h5>Subject-wise (Avg, Max, Min)</h5>
+                <table class="table table-bordered">
+                <tr><th>Subject</th><th>Avg</th><th>Max</th><th>Min</th></tr>
+                <tr><td>Python</td><td>{round(df['Python'].mean(),2)}</td><td>{df['Python'].max()}</td><td>{df['Python'].min()}</td></tr>
+                <tr><td>AI_ML</td><td>{round(df['AI_ML'].mean(),2)}</td><td>{df['AI_ML'].max()}</td><td>{df['AI_ML'].min()}</td></tr>
+                <tr><td>Data_Science</td><td>{round(df['Data_Science'].mean(),2)}</td><td>{df['Data_Science'].max()}</td><td>{df['Data_Science'].min()}</td></tr>
+                </table>
+            </div></div>
+            <div class="col-md-6"><div class="card p-3 shadow-sm h-100">
+                <h5>Department-wise Average</h5>
+                {dept_avg.to_html(classes='table table-bordered', index=False)}
+            </div></div>
+        </section>
+
+        <!-- FULL REPORT -->
+        <section id="report" class="mt-5 card p-3 shadow-sm">
+            <h3>📋 Full Final Report</h3>
+            <div class="table-responsive">{df.to_html(classes='table table-bordered table-striped', index=False)}</div>
+        </section>
+
+        <!-- CONTACT SECTION jaise Portfolio me hota hai -->
+        <section id="contact" class="mt-5 mb-5 text-center card p-4 shadow-sm bg-dark text-white">
+            <h3>Contact</h3>
+            <p>Project By <b>Sakshi Sorout</b></p>
+            <p>BCA 2nd Year | MKM Group of Colleges, Hodal</p>
+            <p>GitHub: github.com/sakshisorout03 | Email: sakshisorout03@gmail.com</p>
+            <p class="small">Python with AI & Data Science | Future Interns Internship</p>
+        </section>
+
+    </div>
+    </body>
+    </html>
     """
 
 if __name__ == '__main__':
